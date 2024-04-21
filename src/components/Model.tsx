@@ -1,16 +1,9 @@
+import { useTexture } from '@react-three/drei'
 import { useFrame } from '@react-three/fiber'
 import { useControls } from 'leva'
-import { MutableRefObject, useRef } from 'react'
+import { useRef } from 'react'
 
-import type {
-  BufferGeometry,
-  IUniform,
-  Material,
-  Mesh,
-  NormalBufferAttributes,
-  Object3DEventMap,
-  ShaderMaterial,
-} from '@/@types'
+import type { MeshElementRef, UniformType } from '@/@types'
 
 import { fragment, vertex } from './shader'
 
@@ -20,21 +13,10 @@ const Model: React.FC = () => {
     waveLength: { value: 5, min: 0, max: 20, step: 1 },
   })
 
-  const plane =
-    useRef<
-      Mesh<
-        BufferGeometry<NormalBufferAttributes>,
-        Material | Material[],
-        Object3DEventMap
-      >
-    >(null)
-
-  const uniforms: MutableRefObject<
-    | {
-        [uniform: string]: IUniform<unknown>
-      }
-    | undefined
-  > = useRef({
+  const plane = useRef<MeshElementRef>(null)
+  const texture = useTexture('/images/photo.jpg')
+  const uniforms: UniformType = useRef({
+    uTexture: { value: texture },
     uTime: { value: 0 },
     uAmplitude: { value: amplitude },
     uWaveLength: { value: waveLength },
@@ -42,11 +24,9 @@ const Model: React.FC = () => {
 
   useFrame(() => {
     if (plane.current) {
-      ;(plane.current.material as ShaderMaterial).uniforms.uTime.value += 0.04
-      ;(plane.current.material as ShaderMaterial).uniforms.uWaveLength.value =
-        waveLength
-      ;(plane.current.material as ShaderMaterial).uniforms.uAmplitude.value =
-        amplitude
+      plane.current.material.uniforms.uTime.value += 0.04
+      plane.current.material.uniforms.uWaveLength.value = waveLength
+      plane.current.material.uniforms.uAmplitude.value = amplitude
     }
   })
 
@@ -57,7 +37,7 @@ const Model: React.FC = () => {
       <shaderMaterial
         vertexShader={vertex}
         fragmentShader={fragment}
-        wireframe
+        // wireframe
         uniforms={uniforms.current}
       />
     </mesh>
