@@ -7,7 +7,7 @@ export const vertex = `
   void main() {
     vUv = uv;
     vec3 newPosition = position;
-    float wave = uAmplitude * sin(position.x * uWaveLength + uTime);
+    float wave = uAmplitude * sin(position.x * (uWaveLength * 0.35) + uTime);
     newPosition.z += wave;
     gl_Position = projectionMatrix * modelViewMatrix * vec4(newPosition, 1.0);
   }

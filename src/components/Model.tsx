@@ -24,7 +24,7 @@ const Model: React.FC<ModelProps> = ({ scrollProgress }) => {
 
   const { width, height } = texture.image
   const { viewport } = useThree()
-  const scale = useAspect(width, height, 0.05)
+  const scale = useAspect(width, height, 0.3)
 
   const uniforms: UniformType = useRef({
     vUvScale: { value: new THREE.Vector2(0, 0) },
@@ -46,8 +46,8 @@ const Model: React.FC<ModelProps> = ({ scrollProgress }) => {
         [0, 1],
         [scale[1], viewport.height],
       )
-      plane.current.scale.x = scaleX
-      plane.current.scale.y = scaleY
+      plane.current.scale.x = scaleX * 0.35
+      plane.current.scale.y = scaleY * 0.35
 
       const scaleRatio = scaleX / scaleY
       const aspectRatio = width / height
