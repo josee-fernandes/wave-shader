@@ -1,4 +1,4 @@
-import { useTexture } from '@react-three/drei'
+import { useAspect, useTexture } from '@react-three/drei'
 import { useFrame } from '@react-three/fiber'
 import { useControls } from 'leva'
 import { useRef } from 'react'
@@ -15,6 +15,10 @@ const Model: React.FC = () => {
 
   const plane = useRef<MeshElementRef>(null)
   const texture = useTexture('/images/photo.jpg')
+
+  const { width, height } = texture.image
+  const scale = useAspect(width, height, 0.2)
+
   const uniforms: UniformType = useRef({
     uTexture: { value: texture },
     uTime: { value: 0 },
@@ -31,7 +35,7 @@ const Model: React.FC = () => {
   })
 
   return (
-    <mesh ref={plane}>
+    <mesh ref={plane} scale={scale}>
       <planeGeometry args={[3, 3, 45, 45]} />
       <meshBasicMaterial color={'red'} wireframe />
       <shaderMaterial
