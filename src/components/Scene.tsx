@@ -1,13 +1,18 @@
 'use client'
 
 import { Canvas } from '@react-three/fiber'
+import { MotionValue } from 'framer-motion'
 
 import Model from './Model'
 
-const Scene: React.FC = () => {
+interface SceneProps {
+  scrollProgress: MotionValue<number>
+}
+
+const Scene: React.FC<SceneProps> = ({ scrollProgress }) => {
   return (
     <Canvas>
-      <Model />
+      <Model scrollProgress={scrollProgress} />
     </Canvas>
   )
 }

@@ -1,9 +1,8 @@
 export const vertex = `
+  varying vec2 vUv;
   uniform float uAmplitude;
   uniform float uWaveLength;
   uniform float uTime;
-
-  varying vec2 vUv;
 
   void main() {
     vUv = uv;
@@ -15,11 +14,13 @@ export const vertex = `
 `
 
 export const fragment = `
-  uniform sampler2D uTexture;
   varying vec2 vUv;
+  uniform sampler2D uTexture;
+  uniform vec2 vUvScale;
 
   void main() {
-    vec4 color = texture2D(uTexture, vUv);
+    vec2 uv = (vUv - 0.5) * vUvScale + 0.5;
+    vec4 color = texture2D(uTexture, uv);
     gl_FragColor = color;
   }
 `
